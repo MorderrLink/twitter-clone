@@ -90,9 +90,7 @@ export const getStaticPaths: GetStaticPaths = () => {
         fallback: "blocking",
     }
 }
-type prefetchIdParam = {
-    id: string;
-}
+
 
 export async function getStaticProps(context: GetStaticPropsContext<{id: string}>) {
     const id = context.params?.id
