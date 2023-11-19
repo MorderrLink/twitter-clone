@@ -43,8 +43,8 @@ function Form () {
 
             if (session.status !== "authenticated") return 
 
-            trpcUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData:any) => {
-                if (oldData == null || oldData.pages[0] == null) return ;
+            trpcUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
+                if (oldData == null || oldData.pages[0] == null) return
 
                 const newCacheTweet = {
                     ...newTweet,
@@ -52,17 +52,18 @@ function Form () {
                     likedByMe: false,
                     user: {
                         id: session.data.user.id,
-                        name: session.data.user.name,
-                        image: session.data.user.image,
+                        name: session.data.user.name || null,
+                        image: session.data.user.image || null,
                     }
                 }
-                setInputValue(""); 
+                
                 return {
                     ...oldData,
                     pages: [
                         { ...oldData.pages[0],
-                            tweets: [newCacheTweet, ...oldData.pages[0].tweets] },
-                           ...oldData.pages.slice(1)
+                            tweets: [newCacheTweet, ...oldData.pages[0].tweets] 
+                        },
+                        ...oldData.pages.slice(1)
                     ]
                 }
                 

@@ -69,7 +69,7 @@ function TweetCard({
     const trpcUtils = api.useContext()
     const toggleLike =  api.tweet.toggleLike.useMutation({
         onSuccess: async ({addedLike}) => {
-            const updateData: Parameters<typeof trpcUtils.tweet.infiniteFeed.setInfiniteData>[1] = (oldData) => {
+            const updateData: Parameters<typeof trpcUtils.tweet.infiniteFeed.setInfiniteData>[1] =  (oldData) => {
                 if (oldData == null) return
 
                 const countModifier = addedLike ? 1 : -1
@@ -92,9 +92,9 @@ function TweetCard({
                     })
                 }
             }
-            trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData)
-            trpcUtils.tweet.infiniteFeed.setInfiniteData({ onlyFollowing: true }, updateData)
-            trpcUtils.tweet.infiniteProfileFeed.setInfiniteData({ userId: user.id }, updateData)
+            await trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData)
+            await trpcUtils.tweet.infiniteFeed.setInfiniteData({ onlyFollowing: true }, updateData)
+            await trpcUtils.tweet.infiniteProfileFeed.setInfiniteData({ userId: user.id }, updateData)
         } })
 
     function handleToggleLike() {
