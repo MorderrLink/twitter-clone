@@ -28,7 +28,7 @@ export const tweetRouter = createTRPCRouter({
     })
   ).query(async ({ input: {limit = 10, cursor, onlyFollowing = false}, ctx }) => {
     const currentUserId = ctx.session?.user.id
-    return await getInfiniteTweets({ limit, cursor, ctx, whereClause: null || !onlyFollowing ? undefined : {
+    return await getInfiniteTweets({ limit, cursor, ctx, whereClause: currentUserId == null || !onlyFollowing ? undefined : {
       user: {
         followers: {
           some: { id: currentUserId}
