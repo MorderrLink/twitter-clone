@@ -1,9 +1,9 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import type { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 type ButtonProps = {
-    small?: Boolean,
-    gray?: Boolean,
-    className?: String
+    small?: boolean,
+    gray?: boolean,
+    className?: string
 } & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
 const Button = ({small = false, gray = false, className="", ...props}: ButtonProps) => {

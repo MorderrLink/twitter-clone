@@ -92,9 +92,9 @@ function TweetCard({
                     })
                 }
             }
-            await trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData)
-            await trpcUtils.tweet.infiniteFeed.setInfiniteData({ onlyFollowing: true }, updateData)
-            await trpcUtils.tweet.infiniteProfileFeed.setInfiniteData({ userId: user.id }, updateData)
+            trpcUtils.tweet.infiniteFeed.setInfiniteData({}, updateData)
+            trpcUtils.tweet.infiniteFeed.setInfiniteData({ onlyFollowing: true }, updateData)
+            trpcUtils.tweet.infiniteProfileFeed.setInfiniteData({ userId: user.id }, updateData)
         } })
 
     function handleToggleLike() {
