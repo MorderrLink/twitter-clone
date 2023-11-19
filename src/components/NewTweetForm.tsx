@@ -28,13 +28,12 @@ function Form () {
         UpdateTextAreaSize(textArea);
         textAreaRef.current = textArea;
     }, [])
-    const trpxUrils = api.useContext()
+    const trpcUrils = api.useContext()
 
     useLayoutEffect(() => {
         UpdateTextAreaSize(textAreaRef.current);
     }, [inputValue])
 
-    
 
 
     const createTweet = api.tweet.create.useMutation({ 
@@ -43,8 +42,8 @@ function Form () {
 
             if (session.status !== "authenticated") return 
 
-            trpxUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
-                if (oldData == null || oldData.pages[0] == null) return
+            trpcUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData:any) => {
+                if (oldData == null || oldData.pages[0] == null) return ;
 
                 const newCacheTweet = {
                     ...newTweet,
@@ -73,7 +72,8 @@ function Form () {
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         createTweet.mutate({content: inputValue });
-        textAreaRef.current.value = "";
+        setInputValue("")
+
         
     }
 
