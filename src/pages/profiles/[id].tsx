@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from "next";
+import type { GetStaticPaths, GetStaticPropsContext } from "next";
 import Head from "next/head";
 import { ssgHelper } from "../api/ssgHelper";
 import { api } from "~/utils/api";
@@ -9,7 +9,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import ProfileImage from "~/components/ProfileImage";
 import FollowButton from "~/components/FollowButton";
 import { InfiniteTweetList } from "~/components/InfiniteTweetList";
-import { string } from "zod";
+
 
 
 const pluralRules = new Intl.PluralRules()
@@ -42,7 +42,7 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
     } })
 
 
-    if (profile == null || profile.name == null) return <ErrorPage statusCode={404}/>
+    if (profile?.name == null) return <ErrorPage statusCode={404}/>
     
     return (
     <>
