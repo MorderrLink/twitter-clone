@@ -44,7 +44,7 @@ function Form () {
             if (session.status !== "authenticated") return 
 
             trpcUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
-                if (oldData == null || oldData.pages[0] == null) return
+                if (oldData?.pages?.[0] == null) return;
 
                 const newCacheTweet = {
                     ...newTweet,
