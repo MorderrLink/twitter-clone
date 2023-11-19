@@ -9,6 +9,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import ProfileImage from "~/components/ProfileImage";
 import FollowButton from "~/components/FollowButton";
 import { InfiniteTweetList } from "~/components/InfiniteTweetList";
+import { string } from "zod";
 
 
 const pluralRules = new Intl.PluralRules()
@@ -17,9 +18,11 @@ function getPlural( number: number, singular:string, plural: string) {
     return pluralRules.select(number) === "one" ? singular : plural
 }
 
+type ProfilePageParams = {
+    id: string;
+}
 
-
-export default function ProfilePage ({ id }) {
+export default function ProfilePage ({ id }: ProfilePageParams) {
     
     const trpcUtils = api.useContext()
     const {data: profile} = api.profile.getById.useQuery({ id })
@@ -87,18 +90,22 @@ export const getStaticPaths: GetStaticPaths = () => {
         fallback: "blocking",
     }
 }
-
+type prefetchIdParam = {
+    id: string;
+}
 
 export async function getStaticProps(context: GetStaticPropsContext<{id: string}>) {
     const id = context.params?.id
 
-    if (id === null) {
+    if (id == null) {
         return {
             redirect: {
                 destination: "/"
             }
         }
     }
+
+    
 
     const ssg = ssgHelper()
     await ssg.profile.getById.prefetch({ id })

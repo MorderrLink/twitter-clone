@@ -43,7 +43,7 @@ export function InfiniteTweetList({ tweets, isError, isLoading, hasMore, fetchNe
         <InfiniteScroll
         dataLength={tweets.length}
         next={fetchNewTweets}
-        hasMore={hasMore}
+        hasMore={hasMore ? hasMore : false}
         loader={<LoadingSpinner/>}>
 
         {tweets.map( tweet => {
