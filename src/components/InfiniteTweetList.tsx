@@ -22,7 +22,7 @@ type Tweet = {
     likeCount: number;
     likedByMe: boolean;
     user: {id: string; image: string | null; name: string | null };
-    image?: string; 
+    image?: string | null; 
 }
 
 
