@@ -96,7 +96,8 @@ function Form () {
                 <UploadButton
                     endpoint="imageUploader"
                     onClientUploadComplete={(res) => {
-                        let imageUrl = [...res][0]?.url
+                        if (res == undefined) return null;
+                        let imageUrl = [...res][0]?.url;
                         if (imageUrl == undefined) return
                         setFile(imageUrl)
                         // Do something with the response
