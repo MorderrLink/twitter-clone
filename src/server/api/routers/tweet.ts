@@ -38,9 +38,9 @@ export const tweetRouter = createTRPCRouter({
   }),
 
   create: protectedProcedure
-    .input(z.object({ content: z.string().min(1) }))
-    .mutation(async ({ input:{ content }, ctx }) => {
-        const tweet = ctx.db.tweet.create({ data: {content, userId: ctx.session.user.id} })
+    .input(z.object({ content: z.string().min(1), image: z.string().optional() }))
+    .mutation(async ({ input:{ content, image }, ctx }) => {
+        const tweet = ctx.db.tweet.create({ data: {content, image, userId: ctx.session.user.id} })
 
         void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`)
 
@@ -94,6 +94,7 @@ async function getInfiniteTweets({
       user: {
         select: { name: true, id: true, image: true },
       },
+      image: true
     },
   });
 
@@ -114,6 +115,7 @@ async function getInfiniteTweets({
         likeCount: tweet._count.likes,
         user: tweet.user,
         likedByMe: tweet.likes?.length > 0,
+        image: tweet.image
       };
     }),
     nextCursor,

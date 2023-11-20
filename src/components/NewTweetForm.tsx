@@ -5,6 +5,9 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import type {FormEvent} from "react";
 import { api } from "~/utils/api";
 
+import { UploadButton } from "~/utils/uploadthing";
+import FileSample from "./FileSample";
+
 
 function UpdateTextAreaSize(textArea?: HTMLTextAreaElement) {
     if (textArea === null) return;
@@ -31,6 +34,9 @@ function Form () {
     }, [])
     const trpcUrils = api.useContext()
 
+    const [file, setFile] = useState("")
+
+
     useLayoutEffect(() => {
         UpdateTextAreaSize(textAreaRef.current);
     }, [inputValue])
@@ -40,7 +46,7 @@ function Form () {
     const createTweet = api.tweet.create.useMutation({ 
         onSuccess: (newTweet) => {
             setInputValue("");  
-
+            setFile("");
             if (session.status !== "authenticated") return 
 
             trpcUrils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
@@ -54,7 +60,8 @@ function Form () {
                         id: session.data.user.id,
                         name: session.data.user.name ?? null,
                         image: session.data.user.image ?? null,
-                    }
+                    },
+                    image: file,
                 }
                 
                 return {
@@ -72,9 +79,10 @@ function Form () {
     })
 
     function handleSubmit(e: FormEvent) {
-        e.preventDefault();
-        createTweet.mutate({content: inputValue });
+        
+        createTweet.mutate({content: inputValue, image: file });
         setInputValue("")
+        setFile("")
 
         
     }
@@ -85,13 +93,33 @@ function Form () {
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 border-b px-4 py-2">
             <div className="flex gap-4">
                 <ProfileImage src={session.data.user.image}/>
+                <UploadButton
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res) => {
+                        let imageUrl = [...res][0]?.url
+                        if (imageUrl == undefined) return
+                        setFile(imageUrl)
+                        // Do something with the response
+                        console.log("File: ", res);
+                        console.log("File in a State", file)
+
+                    }}
+                    onUploadError={(error: Error) => {
+                        // Do something with the error.
+                        alert(`ERROR! ${error.message}`);
+                    }}
+                />
+                
+                    
                 <textarea
                  name="newTweet" 
                  ref={inputRef}
                  onChange={(e) => setInputValue(e.target.value)}
                  className="flex-grow resize-none overflow-hidden p-4 text-lg outline-none" 
                  placeholder="What's happening?"/>
+                
             </div>
+            {file != "" && <FileSample image={file}/>}
             <Button className="self-end">Send</Button>
         </form>
     )

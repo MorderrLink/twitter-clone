@@ -4,6 +4,7 @@ import ProfileImage from "./ProfileImage";
 import { HeartButton } from "./HeartButton";
 import { api } from "~/utils/api";
 import LoadingSpinner from "./LoadingSpinner";
+import Image from "next/image";
 
 
 type infiniteTweetListProps = {
@@ -21,6 +22,7 @@ type Tweet = {
     likeCount: number;
     likedByMe: boolean;
     user: {id: string; image: string | null; name: string | null };
+    image?: string; 
 }
 
 
@@ -65,6 +67,7 @@ function TweetCard({
     createdAt,
     likeCount,
     likedByMe,
+    image,
 }: Tweet) {
     const trpcUtils = api.useContext()
     const toggleLike =  api.tweet.toggleLike.useMutation({
@@ -112,6 +115,7 @@ function TweetCard({
                 <span className="text-gray-500">{dateTimeFormatter.format(createdAt)}</span>
             </div>
             <p className="whitespace-pre-wrap"> {content} </p>
+            {image != undefined && <Image src={image} alt="Load Error" width={300} height={300} />}
             <HeartButton onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} likeCount={likeCount}/> 
         </div>
     </li>
