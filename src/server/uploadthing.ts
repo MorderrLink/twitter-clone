@@ -4,7 +4,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
  
 const f = createUploadthing();
  
-const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); // Fake auth function
+const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId", req, res}); // Fake auth function
  
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
