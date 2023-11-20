@@ -4,7 +4,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
  
 const f = createUploadthing();
  
-const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); // Fake auth function
+const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fake user id", req, res}); // Fake auth function
  
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -21,11 +21,11 @@ export const ourFileRouter = {
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: user.id };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete( () => {
       // This code RUNS ON YOUR SERVER after upload
       // console.log("Upload complete for userId:", metadata.userId);
  
-      console.log("file url", file.url);
+      // console.log("file url", file.url);
  
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       // return { uploadedBy: metadata.userId };

@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import Button from "./Button";
 import ProfileImage from "./ProfileImage";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import type {FormEvent} from "react";
+
 import { api } from "~/utils/api";
 
 import { UploadButton } from "~/utils/uploadthing";
@@ -78,7 +78,7 @@ function Form () {
         }
     })
 
-    function handleSubmit(e: FormEvent) {
+    function handleSubmit() {
         
         createTweet.mutate({content: inputValue, image: file });
         setInputValue("")
@@ -97,7 +97,7 @@ function Form () {
                     endpoint="imageUploader"
                     onClientUploadComplete={(res) => {
                         if (res == undefined) return null;
-                        let imageUrl = [...res][0]?.url;
+                        const imageUrl = [...res][0]?.url;
                         if (imageUrl == undefined) return
                         setFile(imageUrl)
                         // Do something with the response
