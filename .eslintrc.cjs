@@ -20,6 +20,7 @@ const config = {
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/prefer-optional-chain": "off",
 
     "@typescript-eslint/consistent-type-imports": [
       "warn",

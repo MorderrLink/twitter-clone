@@ -4,7 +4,6 @@ import ProfileImage from "./ProfileImage";
 import { HeartButton } from "./HeartButton";
 import { api } from "~/utils/api";
 import LoadingSpinner from "./LoadingSpinner";
-import Image from "next/image";
 import VideoFrame from "./VideoFrame";
 import ImageFrame from "./ImageFrame";
 
