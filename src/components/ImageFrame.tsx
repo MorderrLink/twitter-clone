@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { MdClose } from "react-icons/md";
 
 
 type ImageFrameProps = {
@@ -9,7 +8,7 @@ type ImageFrameProps = {
 
 function ImageFrame({file}: ImageFrameProps) {
 
-  const [imgModal, setImgModal] = useState<Boolean>(false);
+  const [imgModal, setImgModal] = useState<boolean>(false);
 
   function interactImageModal() {
     if (imgModal) {

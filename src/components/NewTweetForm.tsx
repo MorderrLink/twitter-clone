@@ -86,7 +86,7 @@ function Form () {
     })
 
 
-    async function removeSample() {
+    function removeSample() {
         setFile(undefined)
         setFileUrl(undefined)
         setFileType(undefined)
@@ -115,8 +115,8 @@ function Form () {
         
     }
 
-    async function handleChange(e:React.ChangeEvent<HTMLInputElement>) {      
-        let tempFile = e.target.files?.[0]  
+    function handleChange(e:React.ChangeEvent<HTMLInputElement>) {      
+        const tempFile = e.target.files?.[0]  
         setFile(tempFile)
         console.log(tempFile, tempFile?.type)
         if ( tempFile === undefined || tempFile.type === undefined) {

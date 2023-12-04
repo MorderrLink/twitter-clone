@@ -1,8 +1,6 @@
-import { FaPlay } from "react-icons/fa";
 import { RiFullscreenLine } from "react-icons/ri";
 import { useState } from "react";
-import { MdClose } from "react-icons/md";
-import Image from "next/image";
+
 
 type VideoFrameProps = {
     file: string;
@@ -12,7 +10,7 @@ type VideoFrameProps = {
 
 function VideoFrame({file}: VideoFrameProps) {
 
-  const [modal, setModal] = useState<Boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
 
   function interactVideoModal() {
     if (modal) {

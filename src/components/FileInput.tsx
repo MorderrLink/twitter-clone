@@ -1,7 +1,8 @@
+import { ChangeEventHandler } from "react";
 import { VscFile } from "react-icons/vsc";
 
 type FileInputProps = {
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
 
