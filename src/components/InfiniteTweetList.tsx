@@ -5,6 +5,8 @@ import { HeartButton } from "./HeartButton";
 import { api } from "~/utils/api";
 import LoadingSpinner from "./LoadingSpinner";
 import Image from "next/image";
+import VideoFrame from "./VideoFrame";
+import ImageFrame from "./ImageFrame";
 
 
 type infiniteTweetListProps = {
@@ -22,7 +24,8 @@ type Tweet = {
     likeCount: number;
     likedByMe: boolean;
     user: {id: string; image: string | null; name: string | null };
-    image?: string | null; 
+    fileUrl?: string | null; 
+    fileType?: string | null;
 }
 
 
@@ -67,7 +70,8 @@ function TweetCard({
     createdAt,
     likeCount,
     likedByMe,
-    image,
+    fileUrl,
+    fileType
 }: Tweet) {
     const trpcUtils = api.useContext()
     const toggleLike =  api.tweet.toggleLike.useMutation({
@@ -105,7 +109,7 @@ function TweetCard({
     }
 
     return <li className="flex gap-4 border-b px-4 py-4">
-        <Link href={`/profiles/${user.id}`} className="outline-none">
+        <Link href={`/profiles/${user.id}`} className="outline-none z-0">
             <ProfileImage src={user.image} />
         </Link>
         <div className="flex flex-grow flex-col">
@@ -115,7 +119,8 @@ function TweetCard({
                 <span className="text-gray-500">{dateTimeFormatter.format(createdAt)}</span>
             </div>
             <p className="whitespace-pre-wrap"> {content} </p>
-            {image != undefined && <Image src={image} alt="Load Error" width={300} height={300} />}
+            {fileUrl != undefined && fileType === "image" && <ImageFrame file={fileUrl}/>}
+            {fileUrl != undefined && fileType === "video" && <VideoFrame file={fileUrl}/>}
             <HeartButton onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} likeCount={likeCount}/> 
         </div>
     </li>

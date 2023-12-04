@@ -4,7 +4,7 @@ import { type AppType } from "next/app";
 import Head from "next/head";
 import SideNav from "~/components/SideNav";
 import { api } from "~/utils/api";
-
+import { EdgeStoreProvider } from '../lib/edgestore';
 import "~/styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -13,6 +13,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+    <EdgeStoreProvider>
       <Head>
         <title>Twitter Clone</title>
         <meta name="description" content="It's a Tweeter clone" />
@@ -24,6 +25,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <Component {...pageProps} />  
         </div>
       </div>
+    </EdgeStoreProvider>
     </SessionProvider>
   );
 };
