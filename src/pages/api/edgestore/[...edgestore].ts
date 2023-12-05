@@ -4,7 +4,10 @@ import { createEdgeStoreNextHandler } from '@edgestore/server/adapters/next/page
 const es = initEdgeStore.create();
 
 const edgeStoreRouter = es.router({
-  publicFiles: es.fileBucket(),
+  publicFiles: es.fileBucket({
+    maxSize: 1024 * 1024 * 10, // 10MB
+    accept: ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/mov"]
+  }),
 });
 
 export default createEdgeStoreNextHandler({

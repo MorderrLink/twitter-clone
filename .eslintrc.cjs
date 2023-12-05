@@ -15,11 +15,11 @@ const config = {
     // Feel free to reconfigure them to your own preference.
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-unsafe-return": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/restrict-plus-operands": "off",
+    // "@typescript-eslint/no-unsafe-return": "off",
+    // "@typescript-eslint/no-unsafe-call": "off",
+    // "@typescript-eslint/no-unsafe-member-access": "off",
+    // "@typescript-eslint/no-unsafe-assignment": "off",
+    // "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/prefer-optional-chain": "off",
 
     "@typescript-eslint/consistent-type-imports": [
@@ -40,3 +40,4 @@ const config = {
 };
 
 module.exports = config;
+
