@@ -26,7 +26,7 @@ function ImageFrame({file}: ImageFrameProps) {
 
         {/* MODAL */}
         <div onClick={() => { setImgModal(false) }} className={`h-full w-full flex top-0 left-0 z-40 fixed items-center justify-center ${imgModal ? "" : "hidden"} bg-opacity-80 bg-black overflow-y-hidden`}>
-          <div className={`w-8/12 h-min sm:w-full sm:h-max absolute flex flex-col-reverse items-center justify-center bg-opacity-95 bg-slate-100`}>
+          <div className={`w-5/12 h-5/12 absolute flex flex-col-reverse items-center justify-center bg-opacity-95 bg-slate-100`}>
             <img className={`w-full h-full`} src={file} alt="Oops! Failed to Load..." />
           </div>
         </div>

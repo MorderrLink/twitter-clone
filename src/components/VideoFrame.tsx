@@ -29,7 +29,7 @@ function VideoFrame({file}: VideoFrameProps) {
         </div>
         {/* MODAL */}
         <div onClick={() => { setModal(false) }} className={`h-full w-full flex top-0 left-0 z-40 fixed items-center justify-center ${modal ? "" : "hidden"} bg-opacity-80 bg-black overflow-y-hidden`}>
-          <div className={`w-8/12 h-min sm:w-full sm:h-max absolute flex flex-col-reverse items-center justify-center bg-opacity-95 bg-slate-100`}>
+          <div className={`w-7/12 h-7/12 absolute flex flex-col-reverse items-center justify-center bg-opacity-95 bg-slate-100`}>
             <video controls className={`w-full h-full`} src={file}> vid </video>
           </div>
         </div>
