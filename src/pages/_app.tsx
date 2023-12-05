@@ -12,21 +12,21 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
     <EdgeStoreProvider>
-      <Head>
-        <title>Twitter Clone</title>
-        <meta name="description" content="It's a Tweeter clone" />
-      </Head>
+      <SessionProvider session={session}>
+        <Head>
+          <title>Twitter Clone</title>
+          <meta name="description" content="It's a Tweeter clone" />
+        </Head>
 
-      <div className="container mx-auto flex items-start">
-        <SideNav/>
-        <div className="min-h-screen flex-grow border-x">
-          <Component {...pageProps} />  
+        <div className="container mx-auto flex items-start">
+          <SideNav/>
+          <div className="min-h-screen flex-grow border-x">
+            <Component {...pageProps} />  
+          </div>
         </div>
-      </div>
+      </SessionProvider>
     </EdgeStoreProvider>
-    </SessionProvider>
   );
 };
 
