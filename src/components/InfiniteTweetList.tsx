@@ -146,7 +146,7 @@ function TweetCard({
             {fileUrl != undefined && !deleted && fileType === "image" && <ImageFrame file={fileUrl}/>}
             {fileUrl != undefined && !deleted && fileType === "video" && <VideoFrame file={fileUrl}/>}
             <HeartButton classNames={`${deleted ? "hidden" : ""} `} onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} disabled={deleted} likeCount={likeCount}/> 
-            { isAdmin && <DeleteButton onClick={() => {DeleteTweet(id, fileUrl)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
+            { isAdmin && <DeleteButton onClick={async () => {await DeleteTweet(id, fileUrl)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
         </div>
     </li>
 }
