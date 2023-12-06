@@ -93,7 +93,6 @@ function Form () {
     }
 
     async function handleSubmit(e:React.FormEvent) {
-        console.log("Submitted", inputValue)
         e.preventDefault()
         if ( inputValue === "" ) return
 
@@ -105,13 +104,15 @@ function Form () {
                 },
                 });
             const EdgeStoreFileUrl = res.url
-            console.log("file was ", EdgeStoreFileUrl)
+
             createTweet.mutate({content: inputValue, fileUrl: EdgeStoreFileUrl, fileType: fileType });
+            setInputValue("")
+            setFile(undefined)
+            setFileType(undefined)
+            return
             }
-            
-                console.log("file was undefined, creating Txt only tweet")
-    
-                createTweet.mutate({content: inputValue, fileUrl: undefined, fileType: undefined });
+
+        createTweet.mutate({content: inputValue, fileUrl: undefined, fileType: undefined });
         
             
         setInputValue("")
@@ -124,7 +125,7 @@ function Form () {
     function handleChange(e:React.ChangeEvent<HTMLInputElement>) {      
         const tempFile = e.target.files?.[0]  
         setFile(tempFile)
-        console.log(tempFile, tempFile?.type)
+        // console.log(tempFile, tempFile?.type)
         if ( tempFile === undefined || tempFile.type === undefined) {
             setFileType(undefined)
         } else if (imageTypes.includes(tempFile?.type)) { 

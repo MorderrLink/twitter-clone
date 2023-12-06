@@ -9,6 +9,7 @@ import ImageFrame from "./ImageFrame";
 import DeleteButton from "./DeleteButton";
 import { VscTrash } from "react-icons/vsc";
 import { useState } from "react";
+import { useEdgeStore } from "~/lib/edgestore";
 
 type infiniteTweetListProps = {
     isLoading: boolean;
@@ -69,6 +70,7 @@ const dateTimeFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "short", }
 
 
 
+
 function TweetCard({
     id,
     user,
@@ -116,10 +118,16 @@ function TweetCard({
 
     const [deleted, setDeleted] = useState<boolean>(false)
     const deleteTweet = api.tweet.delete.useMutation()
+    const { edgestore } = useEdgeStore();
 
-    function DeleteTweet(id:string) {
+    function DeleteTweet(id:string, fileUrl:string | null | undefined) {
         setDeleted(true)
         deleteTweet.mutate({ tweetId: id })
+        if (fileUrl != null && fileUrl != undefined) {
+            edgestore.publicFiles.delete({
+                url: fileUrl,
+              });
+        }
     }
 
     const isAdmin = api.user.getIsAdmin.useQuery().data?.isAdmin
@@ -138,7 +146,7 @@ function TweetCard({
             {fileUrl != undefined && !deleted && fileType === "image" && <ImageFrame file={fileUrl}/>}
             {fileUrl != undefined && !deleted && fileType === "video" && <VideoFrame file={fileUrl}/>}
             <HeartButton classNames={`${deleted ? "hidden" : ""} `} onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} disabled={deleted} likeCount={likeCount}/> 
-            { isAdmin && <DeleteButton onClick={() => {DeleteTweet(id)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
+            { isAdmin && <DeleteButton onClick={() => {DeleteTweet(id, fileUrl)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
         </div>
     </li>
 }
