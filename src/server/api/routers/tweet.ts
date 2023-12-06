@@ -64,6 +64,14 @@ export const tweetRouter = createTRPCRouter({
       }
 
     }),
+
+    delete: protectedProcedure
+    .input(z.object({ tweetId: z.string() }))
+    .mutation(async ({ input: {tweetId}, ctx }) => {
+      await ctx.db.tweet.delete({ where: {
+        id: tweetId
+      } })
+    })
 });
 
 

@@ -8,11 +8,13 @@ type HeartButtonProps = {
     likedByMe: boolean;
     likeCount: number;
     onClick: () => void;
+    disabled: boolean;
+    classNames: string;
 }
 
 
 
-export function HeartButton({likedByMe, likeCount, onClick, isLoading}: HeartButtonProps) {
+export function HeartButton({likedByMe, likeCount, onClick, isLoading, disabled, classNames}: HeartButtonProps) {
 
     const session = useSession()
     const HeartIcon = likedByMe ? VscHeartFilled : VscHeart;
@@ -25,13 +27,13 @@ export function HeartButton({likedByMe, likeCount, onClick, isLoading}: HeartBut
     }
 
     return <button 
-    disabled={isLoading}
+    disabled={isLoading || disabled}
     onClick={onClick}
-    className={`group -ml-2 items-center gap-1 self-start flex transition-colors duration-200 ${likedByMe 
+    className={`${classNames} group -ml-2 items-center gap-1 self-start flex transition-colors duration-200 ${likedByMe 
     ? "text-red-500" 
-    : "text-gray-500 hover:text-red-500 focus-visible:text-red-500"}`}>
+    : "text-gray-500 hover:text-red-500 focus-visible:text-red-500"} ${disabled && "text-white"}`}>
         <IconHoverEffect red>
-            <HeartIcon className={`transition-colors duration-200 ${
+            <HeartIcon className={`transition-colors duration-200 ${disabled && "text-white"} ${
                 likedByMe
                 ? "fill-red-500"
                 : "fill-gray-500 group-hover:fill-red-500 group-focus-visible:fill-red-500"}`} />

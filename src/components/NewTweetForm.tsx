@@ -93,8 +93,10 @@ function Form () {
     }
 
     async function handleSubmit(e:React.FormEvent) {
+        console.log("Submitted", inputValue)
         e.preventDefault()
         if ( inputValue === "" ) return
+
         if (file != undefined) {
             const res = await edgestore.publicFiles.upload({
                 file,
@@ -103,15 +105,19 @@ function Form () {
                 },
                 });
             const EdgeStoreFileUrl = res.url
-        if (EdgeStoreFileUrl === undefined) {
-            createTweet.mutate({content: inputValue, fileUrl: undefined, fileType: undefined });
-        }
-        createTweet.mutate({content: inputValue, fileUrl: EdgeStoreFileUrl, fileType: fileType });
-
+            console.log("file was ", EdgeStoreFileUrl)
+            createTweet.mutate({content: inputValue, fileUrl: EdgeStoreFileUrl, fileType: fileType });
+            }
+            
+                console.log("file was undefined, creating Txt only tweet")
+    
+                createTweet.mutate({content: inputValue, fileUrl: undefined, fileType: undefined });
+        
+            
         setInputValue("")
         setFile(undefined)
         setFileType(undefined)
-        }
+        
         
     }
 
@@ -159,7 +165,7 @@ function Form () {
                 
             </div>
             {fileUrl && (<FileSample file={fileUrl} fileType={fileType} onClick={removeSample}/>)}
-            {inputValue=== "" ? <Button disabled className="self-end bg-slate-400" >Send</Button> : <Button  className="self-end" >Send</Button>}
+            {inputValue=== "" ? <Button type="submit" disabled className="self-end bg-slate-400" >Send</Button> : <Button type="submit" className="self-end" >Send</Button>}
             
         </form>
     )

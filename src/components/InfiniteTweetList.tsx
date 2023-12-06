@@ -6,7 +6,9 @@ import { api } from "~/utils/api";
 import LoadingSpinner from "./LoadingSpinner";
 import VideoFrame from "./VideoFrame";
 import ImageFrame from "./ImageFrame";
-
+import DeleteButton from "./DeleteButton";
+import { VscTrash } from "react-icons/vsc";
+import { useState } from "react";
 
 type infiniteTweetListProps = {
     isLoading: boolean;
@@ -28,6 +30,8 @@ type Tweet = {
 }
 
 
+
+
 export function InfiniteTweetList({ tweets, isError, isLoading, hasMore, fetchNewTweets }: infiniteTweetListProps) {
     if (isLoading) {
         return <LoadingSpinner/>
@@ -41,6 +45,9 @@ export function InfiniteTweetList({ tweets, isError, isLoading, hasMore, fetchNe
     if (tweets == null || tweets?.length === 0) {
         return <h2 className="my-4 text-center text-2xl text-gray-500">No Tweets</h2>
     }
+
+
+
 
 
     return <ul>
@@ -107,6 +114,16 @@ function TweetCard({
         toggleLike.mutate({ id })
     }
 
+    const [deleted, setDeleted] = useState<boolean>(false)
+    const deleteTweet = api.tweet.delete.useMutation()
+
+    function DeleteTweet(id:string) {
+        setDeleted(true)
+        deleteTweet.mutate({ tweetId: id })
+    }
+
+    const isAdmin = api.user.getIsAdmin.useQuery().data?.isAdmin
+
     return <li className="flex gap-4 border-b px-4 py-4">
         <Link href={`/profiles/${user.id}`} className="outline-none z-0">
             <ProfileImage src={user.image} />
@@ -117,10 +134,11 @@ function TweetCard({
                 <span className="text-gray-500">-</span>
                 <span className="text-gray-500">{dateTimeFormatter.format(createdAt)}</span>
             </div>
-            <p className="whitespace-pre-wrap"> {content} </p>
-            {fileUrl != undefined && fileType === "image" && <ImageFrame file={fileUrl}/>}
-            {fileUrl != undefined && fileType === "video" && <VideoFrame file={fileUrl}/>}
-            <HeartButton onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} likeCount={likeCount}/> 
+             {deleted ? <p className="text-teal-700 font-extrabold">POST WAS DELETED</p> : <p className="whitespace-pre-wrap ">{content}</p> } 
+            {fileUrl != undefined && !deleted && fileType === "image" && <ImageFrame file={fileUrl}/>}
+            {fileUrl != undefined && !deleted && fileType === "video" && <VideoFrame file={fileUrl}/>}
+            <HeartButton classNames={`${deleted ? "hidden" : ""} `} onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} disabled={deleted} likeCount={likeCount}/> 
+            { isAdmin && <DeleteButton onClick={() => {DeleteTweet(id)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
         </div>
     </li>
 }

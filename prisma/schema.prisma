@@ -75,7 +75,6 @@ model Account {
     id_token          String? // @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
     @@unique([provider, providerAccountId])
 }
 
@@ -93,10 +92,11 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    isAdmin Boolean @default(false)
+    isBanned Boolean @default(false)
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
-
 
     tweets Tweet[]
     likes Like[]
