@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticPropsContext } from "next";
 import Head from "next/head";
-import { ssgHelper } from "../api/ssgHelper";
+// import { ssgHelper } from "../api/ssgHelper";
 import { api } from "~/utils/api";
 import ErrorPage from "next/error"
 import Link from "next/link";
@@ -96,8 +96,8 @@ export const getStaticPaths: GetStaticPaths = () => {
     }
 }
 
-
-export async function getStaticProps(context: GetStaticPropsContext<{id: string}>) {
+// async
+export  function getStaticProps(context: GetStaticPropsContext<{id: string}>) {
     const id = context.params?.id
 
     if (id == null) {
