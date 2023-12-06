@@ -6,7 +6,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/
 import type { createTRPCContext } from "~/server/api/trpc";
 
 export const tweetRouter = createTRPCRouter({
-  infiniteProfileFeed: publicProcedure
+  infiniteProfileFeed: protectedProcedure
   .input(z.object({
     userId: z.string(),
     limit: z.number().optional(),

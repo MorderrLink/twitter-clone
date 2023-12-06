@@ -15,13 +15,13 @@ export default function Home() {
   return (
     <>
       <header className="sticky top-0 z-10 border-b bg-white pt-2">
-        <h1 className="mb-2 px-4 text-lg font-bold">Home</h1>
+        <h1 className="mb-2 px-4 text-lg font-semibold">Home</h1>
         {session.status === "authenticated" && (
           <div className="flex">
             {TABS.map(tab => {
               return <button key={tab} className={`flex-grow p-2 hover:bg-gray-200 focus-visible:bg-gray-200 
               ${ tab === selectedTab 
-                ? "border-b-4 border-b-blue-500 font-bold" 
+                ? "border-b-4 border-b-blue-500 font-semibold" 
                 : "" }`}
                 onClick={() => setSelectedTab(tab)}
                 >
@@ -31,8 +31,13 @@ export default function Home() {
           </div>
         )}
       </header>
-      <NewTweetForm/>
-      {selectedTab === "Recent" ? <RecentTweets/> : <FollowingTweets /> }
+      { session.status === "authenticated" ? (<div>
+        <NewTweetForm/>
+        {selectedTab === "Recent" ? <RecentTweets/> : <FollowingTweets /> }
+      </div>) : <div className="w-full h-screen flex justify-center items-center font-mono">
+        <p className="text-xl">You need to AUTH to see posts!</p>
+      </div> }
+      
     </>
   );
 }
@@ -42,7 +47,6 @@ function RecentTweets() {
     {}, 
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
-
   return <InfiniteTweetList
     tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
     isError={tweets.isError}

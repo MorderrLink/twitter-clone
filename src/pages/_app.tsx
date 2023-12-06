@@ -6,11 +6,13 @@ import SideNav from "~/components/SideNav";
 import { api } from "~/utils/api";
 import { EdgeStoreProvider } from '../lib/edgestore';
 import "~/styles/globals.css";
+import YouAreBanned from "~/components/YouAreBanned";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const isBanned = api.user.getIsBanned.useQuery().data?.isBanned
   return (
     <EdgeStoreProvider>
       <SessionProvider session={session}>
@@ -19,12 +21,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <meta name="description" content="It's a Tweeter clone" />
         </Head>
 
-        <div className="container mx-auto flex items-start">
-          <SideNav/>
-          <div className="min-h-screen flex-grow border-x">
-            <Component {...pageProps} />  
-          </div>
+        {isBanned ? <YouAreBanned/>
+        : <div className="container mx-auto flex items-start font-roboto">
+        <SideNav/>
+        <div className="min-h-screen flex-grow border-x">
+          
+          <Component {...pageProps} />  
         </div>
+      </div>
+      }
       </SessionProvider>
     </EdgeStoreProvider>
   );

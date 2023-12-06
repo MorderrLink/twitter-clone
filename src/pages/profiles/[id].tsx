@@ -41,6 +41,8 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
         })
     } })
 
+    const isBanned = api.user.getIsAnotherBanned.useQuery({ id: id }).data?.isBanned
+    if (isBanned == undefined) return
 
     if (profile?.name == null) return <ErrorPage statusCode={404}/>
     
@@ -64,8 +66,11 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
                     {profile.followersCount}{" "}{getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
                     {profile.followsCount}{" "}Following
                 </div>
+                
             </div>
+            { isBanned && <h1 className="text-xl font-semibold font-serif text-red-800 px-4">This user is currently banned</h1> }
             <FollowButton 
+             disabled={isBanned}
              isFollowing={profile.isFollowing}
              isLoading={toggleFollow.isLoading}
              userId={id}
@@ -105,13 +110,13 @@ export async function getStaticProps(context: GetStaticPropsContext<{id: string}
 
     
 
-    const ssg = ssgHelper()
-    await ssg.profile.getById.prefetch({ id })
+    // const ssg = ssgHelper()
+    // await ssg.profile.getById.prefetch({ id })
 
     return {
         props: {
             id,
-            trpcState: ssg.dehydrate(),
+            // trpcState: ssg.dehydrate(),
 
         }
     }
