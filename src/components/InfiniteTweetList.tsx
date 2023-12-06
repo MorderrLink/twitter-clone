@@ -120,11 +120,11 @@ function TweetCard({
     const deleteTweet = api.tweet.delete.useMutation()
     const { edgestore } = useEdgeStore();
 
-    function DeleteTweet(id:string, fileUrl:string | null | undefined) {
+    async function DeleteTweet(id:string, fileUrl:string | null | undefined) {
         setDeleted(true)
         deleteTweet.mutate({ tweetId: id })
         if (fileUrl != null && fileUrl != undefined) {
-            edgestore.publicFiles.delete({
+            await edgestore.publicFiles.delete({
                 url: fileUrl,
               });
         }

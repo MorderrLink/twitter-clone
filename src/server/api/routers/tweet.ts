@@ -1,7 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import type { inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
-import { useEdgeStore } from "~/lib/edgestore";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 import type { createTRPCContext } from "~/server/api/trpc";
