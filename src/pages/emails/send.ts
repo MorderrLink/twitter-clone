@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 import { EmailTemplate } from '~/components/EmailTemplate';
 import { Resend } from 'resend';
 
@@ -9,11 +9,11 @@ type emailProps = {
     author:string | null | undefined;
     authorId:string | null | undefined;
     userEmail: string | null;
-    req: NextApiRequest;
+
     res: NextApiResponse;
 }
 
-export default async ({content, author, authorId, userEmail, req, res}: emailProps) => {
+export default async ({content, author, authorId, userEmail, res}: emailProps) => {
   try {
     if (userEmail !== null) {
       const data = await resend.emails.send({

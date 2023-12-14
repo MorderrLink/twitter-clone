@@ -112,7 +112,7 @@ function Form () {
         authorId:string | null | undefined;
         userEmail: string | null;
     }
-    const sendEmail = async ({content, author, authorId, userEmail}: sendProps) => {
+    async function sendEmail({content, author, authorId, userEmail}: sendProps) {
         const response = await fetch('/emails/send', {
             method: 'POST',
             headers: {
@@ -148,9 +148,9 @@ function Form () {
         
         if (session.data?.user.name != undefined && followers !== undefined) {
             
-            followers.forEach(follower => {
+            followers.forEach(async (follower) => {
                 console.log(follower)
-                sendEmail({content: inputValue, author: session.data?.user.name, authorId: session.data?.user.id, userEmail: follower.email}) 
+                await sendEmail({content: inputValue, author: session.data?.user.name, authorId: session.data?.user.id, userEmail: follower.email}) 
             });
             
         }
