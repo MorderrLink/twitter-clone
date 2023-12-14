@@ -2,48 +2,48 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { IconHoverEffect } from "./IconHoverEffect"
 import { VscHome, VscAccount, VscSignIn, VscSignOut } from "react-icons/vsc";
-import { BsBell, BsBellSlash } from "react-icons/bs";
-import { useState } from "react";
-import { api } from "~/utils/api";
+// import { BsBell, BsBellSlash } from "react-icons/bs";
+// import { useState } from "react";
+// import { api } from "~/utils/api";
 
 export default function SideNav () {
     const session = useSession()
     const user = session.data?.user
-    const currentUserId = user?.id
-    const [notifications, setNotifications] = useState<boolean>(false)
-    const [permission, setPermission] = useState<"granted" | "denied" | undefined>(undefined)
+    // const currentUserId = user?.id
+    // const [notifications, setNotifications] = useState<boolean>(false)
+    // const [permission, setPermission] = useState<"granted" | "denied" | undefined>(undefined)
 
-    const backendNotificationState = api.user.setNotifications.useMutation()
+    // const backendNotificationState = api.user.setNotifications.useMutation()
 
-    function changeNotifications() {
-        if (currentUserId == undefined) return 
-        if (permission === undefined) {
-            Notification.requestPermission().then((perm) => {
-                try {
-                    if (perm === "granted") {
-                        setNotifications(true)
-                        setPermission("granted")
-                        backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-                    } else {   
-                        setNotifications(false)
-                        backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-                        setPermission("denied")
-                    }
-                } catch (error) {
-                    console.error(error)
-                }
+    // function changeNotifications() {
+    //     if (currentUserId == undefined) return 
+    //     if (permission === undefined) {
+    //         Notification.requestPermission().then((perm) => {
+    //             try {
+    //                 if (perm === "granted") {
+    //                     setNotifications(true)
+    //                     setPermission("granted")
+    //                     backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+    //                 } else {   
+    //                     setNotifications(false)
+    //                     backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+    //                     setPermission("denied")
+    //                 }
+    //             } catch (error) {
+    //                 console.error(error)
+    //             }
                 
-            }) 
-        }
-        if (permission == "granted" && notifications) {
-            setNotifications(false)
-            backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-        }
-        if (permission == "granted" && !notifications) {
-            setNotifications(true)
-            backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-        }
-    }
+    //         }) 
+    //     }
+    //     if (permission == "granted" && notifications) {
+    //         setNotifications(false)
+    //         backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+    //     }
+    //     if (permission == "granted" && !notifications) {
+    //         setNotifications(true)
+    //         backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+    //     }
+    // }
 
 
 
@@ -106,7 +106,7 @@ export default function SideNav () {
                 </li>
                 }
             </ul>
-            {user !== null && <div className="flex flex-row self-end items-center">
+            {/* {user !== null && <div className="flex flex-row self-end items-center">
                     <span className="hidden text-lg md:inline ">Notifications <p className="text-xs text-gray-500">You will receive them on your email</p></span>
                     
                     <button onClick={changeNotifications}>
@@ -116,7 +116,7 @@ export default function SideNav () {
                             </span>  
                         </IconHoverEffect>
                     </button>
-                </div>}
+                </div>} */}
         </nav>
     )
 }

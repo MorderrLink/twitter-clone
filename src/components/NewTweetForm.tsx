@@ -48,7 +48,7 @@ function Form () {
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
     const [fileType, setFileType] = useState<string | undefined>(undefined)
     const { edgestore } = useEdgeStore();
-    var followers: { id: string; email: string | null; }[] | undefined = undefined;
+    let followers: { id: string; email: string | null; }[] | undefined = undefined;
 
 
     
