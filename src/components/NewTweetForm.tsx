@@ -8,6 +8,9 @@ import  FileInput  from "./FileInput";
 import FileSample from "./FileSample";
 // import { URL } from "next/dist/compiled/@edge-runtime/primitives/url";
 import { useEdgeStore } from '../lib/edgestore';
+import { Toaster, toast } from 'sonner';
+
+
 
 const imageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml", "image/tiff", "mage/bmp", "image/x-icon"]
 const videoTypes = ["video/mp4", "video/webm", "video/mov"]
@@ -38,16 +41,30 @@ function Form () {
     }, [])
     const trpcUrils = api.useContext()
 
+    type followersQueryType = {
+        id: string;
+        email: string | null;
+    }[]
+
 
     const [file, setFile] = useState<File | undefined>(undefined)
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
     const [fileType, setFileType] = useState<string | undefined>(undefined)
     const { edgestore } = useEdgeStore();
+    var followers: { id: string; email: string | null; }[] | undefined = undefined;
+
+
+    
+    
+    if (session.data?.user !== undefined && followers === undefined) {
+        const followersQuery = api.follows.getFollowers.useQuery({id: session.data.user.id}).data
+        followers = followersQuery
+    }
+
 
     useLayoutEffect(() => {
         UpdateTextAreaSize(textAreaRef.current);
     }, [inputValue])
-
 
 
     const createTweet = api.tweet.create.useMutation({ 
@@ -92,10 +109,26 @@ function Form () {
         setFileType(undefined)
     }
 
+    type sendProps = {
+        content:string;
+        author:string | null | undefined;
+        authorId:string | null | undefined;
+        userEmail: string | null;
+    }
+    const sendEmail = async ({content, author, authorId, userEmail}: sendProps) => {
+        const response = await fetch('/emails/send', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({content: content, author: author, authorId: authorId, userEmail: userEmail})
+        })
+
+    }
+
     async function handleSubmit(e:React.FormEvent) {
         e.preventDefault()
         if ( inputValue === "" ) return
-
         if (file != undefined) {
             const res = await edgestore.publicFiles.upload({
                 file,
@@ -114,11 +147,26 @@ function Form () {
 
         createTweet.mutate({content: inputValue, fileUrl: undefined, fileType: undefined });
         
+        if (session.data?.user.name != undefined && followers !== undefined) {
             
+            followers.forEach(follower => {
+                console.log(follower)
+                sendEmail({content: inputValue, author: session.data?.user.name, authorId: session.data?.user.id, userEmail: follower.email}) 
+            });
+            
+        }
+        
+         
+
         setInputValue("")
         setFile(undefined)
         setFileType(undefined)
-        
+        toast.success("Tweet created", {
+            duration: 3000,
+        })
+
+
+
         
     }
 
@@ -153,7 +201,9 @@ function Form () {
     if (session.status !== "authenticated") return null;
 
     return (
+        
         <form onSubmit={handleSubmit} className="flex flex-col gap-2 border-b px-4 py-2">
+            <Toaster richColors />
             <div className="flex gap-4">
                 <ProfileImage src={session.data.user.image}/>
                 <FileInput onChange={handleChange}/>

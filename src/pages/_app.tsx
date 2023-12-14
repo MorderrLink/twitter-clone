@@ -8,16 +8,21 @@ import { EdgeStoreProvider } from '../lib/edgestore';
 import "~/styles/globals.css";
 import YouAreBanned from "~/components/YouAreBanned";
 
+
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   const isBanned = api.user.getIsBanned.useQuery().data?.isBanned
+
+
+
   return (
     <EdgeStoreProvider>
       <SessionProvider session={session}>
         <Head>
-          <title>Twitter Clone</title>
+          <title>Gambitter</title>
           <meta name="description" content="It's a Tweeter clone" />
         </Head>
 

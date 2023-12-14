@@ -19,9 +19,9 @@ function ImageFrame({file}: ImageFrameProps) {
   }
 
   return (
-    <div className="w-3/5">
+    <div className="w-3/5 ">
         <div onClick={interactImageModal}>
-            <img  src={file} alt="Oops! Failed to Load..." />
+            <img className="lg:max-h-72" src={file} alt="Oops! Failed to Load..." />
         </div>
 
         {/* MODAL */}

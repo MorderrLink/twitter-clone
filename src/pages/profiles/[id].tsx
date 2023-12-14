@@ -9,6 +9,7 @@ import { VscArrowLeft } from "react-icons/vsc";
 import ProfileImage from "~/components/ProfileImage";
 import FollowButton from "~/components/FollowButton";
 import { InfiniteTweetList } from "~/components/InfiniteTweetList";
+import { useSession } from "next-auth/react";
 
 
 
@@ -27,6 +28,9 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
     const trpcUtils = api.useContext()
     const {data: profile} = api.profile.getById.useQuery({ id })
     const tweets = api.tweet.infiniteProfileFeed.useInfiniteQuery({ userId: id}, { getNextPageParam: (lastPage) => lastPage.nextCursor})
+    const session = useSession()
+    const currentUserId = session.data?.user.id
+    if (currentUserId == undefined) return
 
     const toggleFollow = api.profile.toggleFollow.useMutation({ onSuccess: ({addedFollow}) => {
         trpcUtils.profile.getById.setData({ id }, oldData => {
@@ -40,6 +44,15 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
             }
         })
     } })
+
+    
+
+    // const editFollow = () => {
+    //     const createFollow = api.follows.addFollow.useMutation()
+    //     createFollow.mutate({follower: currentUserId, follow: id})
+        
+        
+    // }
 
     const isBanned = api.user.getIsAnotherBanned.useQuery({ id: id }).data?.isBanned
     if (isBanned == undefined) return
@@ -74,7 +87,7 @@ export default function ProfilePage ({ id }: ProfilePageParams) {
              isFollowing={profile.isFollowing}
              isLoading={toggleFollow.isLoading}
              userId={id}
-             onClick={() => toggleFollow.mutate({userId: id})} />
+             onClick={() => {toggleFollow.mutate({userId: id}); }} />
         </header>
         <main>
             <InfiniteTweetList

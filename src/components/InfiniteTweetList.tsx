@@ -10,6 +10,7 @@ import DeleteButton from "./DeleteButton";
 import { VscTrash } from "react-icons/vsc";
 import { useState } from "react";
 import { useEdgeStore } from "~/lib/edgestore";
+import { Toaster, toast } from 'sonner';
 
 type infiniteTweetListProps = {
     isLoading: boolean;
@@ -133,6 +134,7 @@ function TweetCard({
     const isAdmin = api.user.getIsAdmin.useQuery().data?.isAdmin
 
     return <li className="flex gap-4 border-b px-4 py-4">
+        <Toaster richColors />
         <Link href={`/profiles/${user.id}`} className="outline-none z-0">
             <ProfileImage src={user.image} />
         </Link>
@@ -142,11 +144,11 @@ function TweetCard({
                 <span className="text-gray-500">-</span>
                 <span className="text-gray-500">{dateTimeFormatter.format(createdAt)}</span>
             </div>
-             {deleted ? <p className="text-teal-700 font-extrabold">POST WAS DELETED</p> : <p className="whitespace-pre-wrap ">{content}</p> } 
+             {deleted ? "" : <p className="whitespace-pre-wrap ">{content}</p> } 
             {fileUrl != undefined && !deleted && fileType === "image" && <ImageFrame file={fileUrl}/>}
             {fileUrl != undefined && !deleted && fileType === "video" && <VideoFrame file={fileUrl}/>}
             <HeartButton classNames={`${deleted ? "hidden" : ""} `} onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} disabled={deleted} likeCount={likeCount}/> 
-            { isAdmin && <DeleteButton onClick={async () => {await DeleteTweet(id, fileUrl)}} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
+            { isAdmin && <DeleteButton onClick={async () => {await DeleteTweet(id, fileUrl); toast.info("Tweet deleted",{duration: 3000}) }} deleted={deleted} >  <VscTrash/>  </DeleteButton> }
         </div>
     </li>
 }

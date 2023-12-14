@@ -94,6 +94,7 @@ model User {
     image         String?
     isAdmin Boolean @default(false)
     isBanned Boolean @default(false)
+    notificationsOn Boolean @default(false)
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
@@ -104,6 +105,14 @@ model User {
     followers User[] @relation(name: "Followers")
     follows User[] @relation(name: "Followers")
 }
+
+
+model Follow {
+  id String @id @default(uuid())
+  following String
+  follower String
+}
+
 
 model VerificationToken {
     identifier String

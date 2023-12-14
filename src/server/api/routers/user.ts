@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 
 
@@ -21,5 +21,21 @@ export const userRouter = createTRPCRouter({
     .query(async ({input: {id: id}, ctx}) => {
         const user = await ctx.db.user.findUnique({where: { id: id }, select: { isBanned: true }})
         return user
-    })
+    }),
+    getIsNotificationsOn: publicProcedure
+    .input(z.object({id : z.string()}))
+    .query(async ({input: {id: id}, ctx}) => {
+        return await ctx.db.user.findUnique({ where: { id: id }, select: {notificationsOn: true}})
+    }),
+    setNotifications: publicProcedure
+    .input(z.object({id : z.string(), NotifFlag: z.boolean()}))
+    .mutation(async ({input: {id : userId, NotifFlag: NotifFlag}, ctx}) => {
+         
+        if (NotifFlag) {
+            await ctx.db.user.update({where: {id: userId}, data: { notificationsOn: false } })
+        } else { 
+            await ctx.db.user.update({where: {id: userId}, data: { notificationsOn: true } })
+        }
+    }),
+
 })
