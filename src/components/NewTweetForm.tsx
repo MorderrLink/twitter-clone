@@ -41,10 +41,7 @@ function Form () {
     }, [])
     const trpcUrils = api.useContext()
 
-    type followersQueryType = {
-        id: string;
-        email: string | null;
-    }[]
+
 
 
     const [file, setFile] = useState<File | undefined>(undefined)
@@ -123,7 +120,9 @@ function Form () {
             },
             body: JSON.stringify({content: content, author: author, authorId: authorId, userEmail: userEmail})
         })
-
+        if (response.status == 200){
+            console.log("Email sent")
+        }
     }
 
     async function handleSubmit(e:React.FormEvent) {

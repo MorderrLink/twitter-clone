@@ -19,15 +19,20 @@ export default function SideNav () {
         if (currentUserId == undefined) return 
         if (permission === undefined) {
             Notification.requestPermission().then((perm) => {
-                if (perm === "granted") {
-                    setNotifications(true)
-                    setPermission("granted")
-                    backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-                } else {   
-                    setNotifications(false)
-                    backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
-                    setPermission("denied")
+                try {
+                    if (perm === "granted") {
+                        setNotifications(true)
+                        setPermission("granted")
+                        backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+                    } else {   
+                        setNotifications(false)
+                        backendNotificationState.mutate({id: currentUserId, NotifFlag: notifications})
+                        setPermission("denied")
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
+                
             }) 
         }
         if (permission == "granted" && notifications) {
