@@ -148,12 +148,11 @@ function Form () {
         
         if (session.data?.user.name != undefined && followers !== undefined) {
             
-            followers.forEach(async (follower) => {
-                console.log(follower)
-                await sendEmail({content: inputValue, author: session.data?.user.name, authorId: session.data?.user.id, userEmail: follower.email}) 
-            });
-            
-        }
+            for (const follower of followers) {
+                console.log(follower);
+                await sendEmail({content: inputValue, author: session.data?.user.name, authorId: session.data?.user.id, userEmail: follower.email});
+            }
+         }
         
          
 
